@@ -14,6 +14,7 @@ import Heading from 'components/Heading';
 import Button from 'components/Button';
 import toast from 'react-hot-toast';
 import { useMutation } from '@tanstack/react-query'
+import { useRouter } from 'next/router'
 
 type AdminCourseEditPageProps = {
   session: Session;
@@ -28,8 +29,20 @@ type CourseUpdateResult = {
   id: number;
 }
 
+const deleteCourse = async (courseId: number) => {
+  const res = await fetch(`/api/courses/${courseId}`, { method: 'DELETE' });
+  if (!res.ok) {
+    throw new Error('Failed to delete course');
+  }
+  if (res.status === 204) {
+    return null;
+  }
+  return res.json();
+};
+
 const AdminCourseEdit: NextPage<AdminCourseEditPageProps> = ({ course }) => {
   const { data: session } = useSession()
+  const router = useRouter()
 
   const handler = (data: Inputs) => {
     return fetch(`/api/courses/${course.id}`, {
@@ -37,7 +50,7 @@ const AdminCourseEdit: NextPage<AdminCourseEditPageProps> = ({ course }) => {
     }).then(res => res.json())
   }
 
-  const mutation = useMutation({ 
+  const mutation = useMutation({
     mutationFn: handler,
     onSuccess: (data: CourseUpdateResult) => {
       toast.success('Course updated successfully')
@@ -47,6 +60,17 @@ const AdminCourseEdit: NextPage<AdminCourseEditPageProps> = ({ course }) => {
       toast.error('Something went wrong')
     }
   })
+
+  const deleteMutation = useMutation({
+    mutationFn: () => deleteCourse(course.id),
+    onSuccess: () => {
+      toast.success('Course deleted successfully');
+      router.push('/admin/');
+    },
+    onError: () => {
+      toast.error('Something went wrong while deleting the course');
+    },
+  });
 
   const onSubmit: SubmitHandler<Inputs> = async data => {
     mutation.mutate(data);
@@ -58,6 +82,44 @@ const AdminCourseEdit: NextPage<AdminCourseEditPageProps> = ({ course }) => {
         <div>
           <Heading as='h2'>{course.name}</Heading>
           <CourseForm onSubmit={onSubmit} course={course} isLoading={mutation.isPending} />
+          <Button
+            intent="danger"
+            onClick={async () => {
+              const confirmation = await new Promise((resolve) => {
+                toast((t) => (
+                  <div className="flex flex-col items-start space-y-2">
+                    <p>Are you sure you want to delete this course? This action cannot be undone.</p>
+                    <div className="flex space-x-2">
+                      <button
+                        className="bg-red-600 text-white px-4 py-2 rounded"
+                        onClick={() => {
+                          resolve(true);
+                          toast.dismiss(t.id);
+                        }}
+                      >
+                        Confirm
+                      </button>
+                      <button
+                        className="bg-gray-200 text-gray-800 px-4 py-2 rounded"
+                        onClick={() => {
+                          resolve(false);
+                          toast.dismiss(t.id);
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ));
+              });
+
+              if (confirmation) {
+                deleteMutation.mutate();
+              }
+            }}
+          >
+            Delete Course
+          </Button>
         </div>
 
         <div>
