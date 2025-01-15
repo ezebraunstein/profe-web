@@ -15,7 +15,7 @@ const TextInput = ({ name, label, options }: Props) => {
     <Field>
       <Label htmlFor={name}>{label}</Label>
       <input type="text" className='border border-gray-200 p-2 rounded mb-2 text-slate-700' {...register(name, options)} />
-      {errors[name] && <span className='text-red-600 text-sm'>{name} is required</span>}
+      {errors[name] && <span className='text-red-600 text-sm'>{name} es requerido</span>}
     </Field>
   )
 }

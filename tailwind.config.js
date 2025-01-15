@@ -3,6 +3,7 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
+  darkMode: 'class',
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
@@ -14,7 +15,9 @@ module.exports = {
     },
     extend: {
       colors: {
-        current: "currentColor",
+        background: "var(--background)",
+        foreground: "var(--foreground)",
+        // current: "currentColor",
       },
       width: {
         1536: "1536px",

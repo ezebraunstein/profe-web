@@ -50,7 +50,7 @@ const CourseViewer = ({ course, lessonProgress = [], setLessonProgress }: Props)
     return (
       <div className="max-w-lg mt-12 mx-8 lg:mx-auto">
         <EmptyState>
-          This course does not have any lessons
+          Este curso todavía no tiene clases
         </EmptyState>
       </div>
     );
@@ -70,7 +70,7 @@ const CourseViewer = ({ course, lessonProgress = [], setLessonProgress }: Props)
             metadata={{
               video_series: activeLesson.courseId,
               video_title: activeLesson.name,
-              player_name: "Video Course Starter Kit",
+              player_name: "Profe Web",
             }}
           />
         ) : (
@@ -78,7 +78,7 @@ const CourseViewer = ({ course, lessonProgress = [], setLessonProgress }: Props)
         )}
 
         <Heading>{activeLesson.name}</Heading>
-        <p className='text-slate-600 text-lg'>{activeLesson.description}</p>
+        <p className='text-foreground text-lg'>{activeLesson.description}</p>
         <br />
       </div>
 
@@ -88,8 +88,8 @@ const CourseViewer = ({ course, lessonProgress = [], setLessonProgress }: Props)
             onClick={() => setActiveLesson(lesson)}
             key={lesson.id}
             className={clsx(
-              'flex gap-5 cursor-pointer hover:bg-gray-50 px-6 py-4',
-              playbackId === lesson.video?.publicPlaybackId && 'bg-yellow-50'
+              'flex gap-5 cursor-pointer hover:bg-slate-800 px-6 py-4',
+              playbackId === lesson.video?.publicPlaybackId && 'bg-slate-900'
             )}
           >
             {lessonProgress.includes(lesson.id) && (
@@ -108,12 +108,12 @@ const CourseViewer = ({ course, lessonProgress = [], setLessonProgress }: Props)
             )}
             <div className='overflow-hidden'>
               <h2>
-                <span className='font-semibold font-cal text-lg text-slate-800'>{lesson.name}</span>
+                <span className='font-semibold font-cal text-lg text-foreground'>{lesson.name}</span>
                 {lesson.video?.duration && (
-                  <span className='text-sm italic text-slate-600 truncate'> • {formatDuration(Math.round(lesson.video.duration))}</span>
+                  <span className='text-sm italic text-foreground truncate'> • {formatDuration(Math.round(lesson.video.duration))}</span>
                 )}
               </h2>
-              <p className='text-md italic text-slate-600 my-1 truncate'>{lesson.description}</p>
+              <p className='text-md italic text-foreground my-1 truncate'>{lesson.description}</p>
             </div>
           </a>
         ))}

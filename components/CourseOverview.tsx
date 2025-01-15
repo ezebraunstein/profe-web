@@ -16,15 +16,15 @@ const CourseOverview = ({ course }: Props) => {
     <>
       <div>
         <Heading>{course.name}</Heading>
-        <p className='text-slate-700 mb-10'></p>
+        <p className='text-foreground mb-10'></p>
 
-        <div className='prose lg:prose-xl'>
+        <div className='prose lg:prose-xl text-foreground'>
           <ReactMarkdown>
             {course.description}
           </ReactMarkdown>
         </div>
 
-        <h2 className='text-slate-800 text-2xl mb-4 font-bold'>What you&apos;ll learn</h2>
+        <h2 className='text-foreground text-2xl mb-4 font-bold'>What you&apos;ll learn</h2>
         {course.lessons.map(lesson => (
           <div key={lesson.id} className='flex flex-col md:flex-row gap-6 mb-8'>
             {lesson.video?.publicPlaybackId && (
@@ -36,7 +36,7 @@ const CourseOverview = ({ course }: Props) => {
               />
             )}
             <div>
-              <h2 className='text-xl font-semibold'>{lesson.name}</h2>
+              <h2 className='text-xl font-semibold text-foreground'>{lesson.name}</h2>
               <p>{lesson.description}</p>
             </div>
           </div>

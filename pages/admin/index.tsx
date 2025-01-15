@@ -28,18 +28,18 @@ const AdminIndex: NextPage<AdminIndexPageProps> = ({ courses }) => {
     return (
       <>
         <Heading>Admin</Heading>
-        <Heading as='h2'>Your courses</Heading>
+        <Heading as='h2'>Tus cursos</Heading>
 
         {courses.length > 0 ? (
           <CourseGrid courses={courses} isAdmin />
         ) : (
           <div>
-            <Heading as='h3'>You don&apos;t have any courses yet.</Heading>
+            <Heading as='h3'>Todavía no tenés cursos</Heading>
           </div>
         )}
 
         <Link href="/admin/courses/new">
-          <Button>Create a course</Button>
+          <Button>Crear un curso</Button>
         </Link>
       </>
     )

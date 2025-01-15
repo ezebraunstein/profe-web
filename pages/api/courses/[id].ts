@@ -65,7 +65,7 @@ export default async function assetHandler(req: NextApiRequest, res: NextApiResp
     case 'DELETE':
       try {
         await prisma.course.delete({ where: { id: parseInt(courseId) } });
-        res.status(204).end(); // No content response
+        res.status(204).end(); 
       } catch (e) {
         console.error('Request error', e);
         res.status(500).end();

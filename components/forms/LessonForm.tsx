@@ -21,9 +21,9 @@ const LessonForm = ({ lesson, onSubmit, isLoading }: Props) => {
   return (
     <FormProvider {...methods}>
       <form className='flex flex-col max-w-lg' onSubmit={methods.handleSubmit(onSubmit)}>
-        <TextInput label='Name' name='name' options={{ required: true }} />
-        <TextAreaInput label='Description' name='description' options={{ required: true }} />
-        <SubmitInput value={`${lesson ? 'Update' : 'Create'} lesson`} isLoading={isLoading} />
+        <TextInput label='Nombre' name='name' options={{ required: true }} />
+        <TextAreaInput label='Descripción' name='description' options={{ required: true }} />
+        <SubmitInput value={`${lesson ? 'Actualizar' : 'Crear'} clase`} isLoading={isLoading} />
       </form>
     </FormProvider>
   )
