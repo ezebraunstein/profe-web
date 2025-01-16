@@ -60,9 +60,20 @@ export default async function assetHandler(req: NextApiRequest, res: NextApiResp
         console.error('Request error', e)
         res.status(500).end();
       }
+      break
+
+    case 'DELETE':
+      try {
+        await prisma.course.delete({ where: { id: parseInt(courseId) } });
+        res.status(204).end(); 
+      } catch (e) {
+        console.error('Request error', e);
+        res.status(500).end();
+      }
       break;
+
     default:
-      res.setHeader('Allow', ['GET', 'PUT'])
+      res.setHeader('Allow', ['GET', 'PUT', 'DELETE'])
       res.status(405).end(`Method ${method} Not Allowed`)
       break
   }

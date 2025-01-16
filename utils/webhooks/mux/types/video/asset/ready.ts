@@ -12,8 +12,7 @@ type Props = {
 
 const handler = async ({ data, metadata }: Props) => {
   const { upload_id, playback_ids, duration, status, aspect_ratio } = data;
-
-  // update video record
+  
   await prisma.video.update({
     where: {
       uploadId: upload_id

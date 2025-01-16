@@ -3,22 +3,19 @@ import type { NextPage, GetServerSideProps } from 'next'
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { useRouter } from 'next/router'
 import { prisma } from 'utils/prisma'
-
+import Button from 'components/Button';
 import Mux from '@mux/mux-node';
 const mux = new Mux();
-
 import MuxUploader from '@mux/mux-uploader-react';
 import { getServerSession } from "next-auth/next"
 import { authOptions } from 'pages/api/auth/[...nextauth]'
 import type { Session } from 'next-auth'
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-
 import Heading from 'components/Heading';
 import TextInput from 'components/forms/TextInput';
 import TextAreaInput from 'components/forms/TextAreaInput';
 import Field from 'components/forms/Field';
-import SubmitInput from 'components/forms/SubmitInput';
 
 type Inputs = {
   name: string;
@@ -67,12 +64,11 @@ const AdminNewLesson: NextPage<AdminNewLessonPageProps> = ({ uploadUrl, uploadId
 
   return (
     <>
-      <Heading>New lesson</Heading>
+      <Heading>Nueva clase</Heading>
       <FormProvider {...methods}>
         <form className='flex flex-col max-w-xl' onSubmit={methods.handleSubmit(onSubmit)}>
-          <TextInput label='Name' name='name' options={{ required: true }} />
-          <TextAreaInput label='Description' name='description' options={{ required: true }} />
-
+          <TextInput label='Nombre' name='name' options={{ required: true }} />
+          <TextAreaInput label='Descripción' name='description' options={{ required: true }} />
           <Field>
             <MuxUploader
               endpoint={uploadUrl}
@@ -85,13 +81,7 @@ const AdminNewLesson: NextPage<AdminNewLessonPageProps> = ({ uploadUrl, uploadId
 
           <input type="hidden" {...methods.register("uploadId", { value: uploadId, required: true })} />
           <input type="hidden" {...methods.register("courseId", { value: courseId, required: true })} />
-
-          <input
-            type="submit"
-            className='bg-blue-500 text-white p-4 disabled:bg-slate-50 disabled:text-gray-400 cursor-pointer disabled:cursor-not-allowed w-fit'
-            value='Create lesson'
-            disabled={!isVideoUploaded}
-          />
+          <Button type="submit" intent="primary">Crear clase</Button>
         </form>
       </FormProvider>
     </>

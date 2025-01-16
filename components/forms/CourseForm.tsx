@@ -29,10 +29,10 @@ const CourseForm = ({ course, onSubmit, isLoading }: Props) => {
   return (
     <FormProvider {...methods}>
       <form className='flex flex-col max-w-lg' onSubmit={methods.handleSubmit(onSubmit)}>
-        <TextInput label='Name' name='name' options={{ required: true }} />
-        <TextAreaInput label='Description' name='description' options={{ required: true }} />
-        {course && <Checkbox label="Publish" name="published" />}
-        <SubmitInput value={`${course ? 'Update' : 'Create'} course`} isLoading={isLoading} />
+        <TextInput label='Nombre' name='name' options={{ required: true }} />
+        <TextAreaInput label='Descripción' name='description' options={{ required: true }} />
+        {course && <Checkbox label="Publicar" name="published" />}
+        <SubmitInput value={`${course ? 'Actualizar' : 'Crear'} curso`} isLoading={isLoading} />
       </form>
     </FormProvider>
   )

@@ -37,11 +37,11 @@ const AdminLessonEdit: NextPage<AdminLessonEditPageProps> = ({ lesson }) => {
   const updateMutation = useMutation({
     mutationFn: updateLesson,
     onSuccess: () => {
-      toast.success('Lesson updated successfully')
+      toast.success('Clase actualizada correctamente')
     },
     onError: (error) => {
       console.error(error)
-      toast.error('Something went wrong')
+      toast.error('Algo salió mal')
     }
   })
 
@@ -49,11 +49,11 @@ const AdminLessonEdit: NextPage<AdminLessonEditPageProps> = ({ lesson }) => {
     mutationFn: deleteLesson,
     onSuccess: () => {
       router.push(`/admin/courses/${lesson.courseId}`)
-      toast.success('Lesson deleted successfully')
+      toast.success('Clase eliminada correctamente')
     },
     onError: (error) => {
       console.error(error)
-      toast.error('Something went wrong')
+      toast.error('Algo salió mal')
     }
   })
 
@@ -63,25 +63,62 @@ const AdminLessonEdit: NextPage<AdminLessonEditPageProps> = ({ lesson }) => {
 
   if (session) {
     return (
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
           {lesson.video?.status === "ready" && lesson.video.publicPlaybackId ? (
             <MuxPlayer
-              className='mb-6 w-full aspect-video'
+              className="mb-6 w-full aspect-video"
               streamType="on-demand"
               playbackId={lesson.video.publicPlaybackId}
               accentColor="#4491EF"
               metadata={{
                 video_series: lesson.courseId,
                 video_title: lesson.name,
-                player_name: "Video Course Starter Kit",
+                player_name: "Profe Web",
               }}
             />
           ) : (
-            <div className='mb-6 w-full aspect-video bg-gray-200' />
+            <div className="mb-6 w-full aspect-video bg-gray-200" />
           )}
 
-          <Button intent="danger" onClick={deleteMutation.mutate}>Delete this lesson</Button>
+          <Button
+            intent="danger"
+            onClick={async () => {
+              const confirmation = await new Promise((resolve) => {
+                toast((t) => (
+                  <div className="flex flex-col items-start space-y-2">
+                    <p className="text-center">Seguro que querés eliminar esta clase?</p>
+                    <div className="flex space-x-4 justify-center w-full">
+                      <button
+                        className="bg-red-600 text-white px-4 py-2 rounded"
+                        onClick={() => {
+                          resolve(true);
+                          toast.dismiss(t.id);
+                        }}
+                      >
+                        Confirmar
+                      </button>
+                      <button
+                        className="bg-gray-200 text-gray-800 px-4 py-2 rounded"
+                        onClick={() => {
+                          resolve(false);
+                          toast.dismiss(t.id);
+                        }}
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  </div>
+                ));
+              });
+
+              if (confirmation) {
+                deleteMutation.mutate();
+              }
+            }}
+          >
+            Eliminar clase
+          </Button>
         </div>
         <div>
           <LessonForm onSubmit={onSubmit} lesson={lesson} isLoading={updateMutation.isPending} />
